@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PumpPay — Business Profile</title>
+<meta name="description" content="PumpPay business profile: a locally manufactured smart solar pump controller sold on Pay As You Go and Pay As You Use, by Tafiti R&I Hub, Kenya.">
+<meta name="theme-color" content="#0b0b0b">
+<link rel="icon" href="assets/img/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/css/theme.css">
+<style>
+  body { background: #f3f3f1; }
+  .sheet { width: min(1000px, 100% - 32px); margin: 32px auto; background: #fff; border-radius: 18px; overflow: hidden; box-shadow: var(--shadow); }
+
+  /* Header band */
+  .top { background: var(--black); color: #fff; padding: 40px 44px 34px; position: relative; overflow: hidden; }
+  .top::after { content: ""; position: absolute; right: -90px; top: -90px; width: 280px; height: 280px; border-radius: 50%; background: var(--green); opacity: .14; }
+  .brand { display: flex; align-items: center; gap: 14px; margin-bottom: 26px; }
+  .brand img { width: 44px; height: auto; }
+  .brand b { font-family: var(--display); font-size: 26px; letter-spacing: -.02em; }
+  .brand small { display: block; color: #9a9a9a; font-size: 12px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; }
+  .top h1 { font-size: clamp(28px, 4.4vw, 42px); max-width: 720px; margin-bottom: 14px; }
+  .top h1 span { color: var(--green); }
+  .top p { color: #cfcfcf; max-width: 640px; margin: 0; font-size: 16px; }
+  .facts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: #262626; margin-top: 30px; border-radius: 12px; overflow: hidden; }
+  .facts div { background: #121212; padding: 14px 16px; }
+  .facts b { display: block; font-family: var(--display); color: var(--green); font-size: 18px; }
+  .facts span { font-size: 12px; color: #9a9a9a; }
+
+  .body { padding: 38px 44px 10px; }
+  .eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--green-600); display: block; margin-bottom: 6px; }
+  h2 { font-size: 22px; }
+  section { margin-bottom: 34px; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+  p { margin: 0 0 10px; }
+
+  .mv { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .mv div { border-left: 4px solid var(--green); background: var(--green-050); padding: 14px 18px; border-radius: 0 12px 12px 0; }
+  .mv h3 { font-size: 15px; margin-bottom: 4px; }
+  .mv p { margin: 0; font-size: 14px; }
+
+  .offer { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .offer .card { padding: 18px; box-shadow: none; }
+  .offer h3 { font-size: 16px; margin-bottom: 6px; }
+  .offer p { font-size: 14px; color: #444; margin: 0; }
+  .offer .tag { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--grey); display: block; margin-bottom: 8px; }
+
+  .plans { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .plan { border-radius: 14px; padding: 20px; border: 1.5px solid var(--line); }
+  .plan.dark { background: var(--black); color: #fff; border-color: var(--black); }
+  .plan h3 { font-size: 18px; margin-bottom: 2px; }
+  .plan .sub { font-size: 13px; color: var(--grey); margin-bottom: 12px; }
+  .plan.dark .sub { color: #9a9a9a; }
+  .plan ul { margin: 0; padding-left: 18px; font-size: 14px; }
+  .plan li { margin-bottom: 4px; }
+  .plan .price { font-family: var(--display); font-size: 22px; margin: 4px 0 10px; }
+  .plan.dark .price { color: var(--green); }
+
+  .ticks { list-style: none; padding: 0; margin: 0; font-size: 14px; }
+  .ticks li { padding-left: 26px; position: relative; margin-bottom: 8px; }
+  .ticks li::before { content: "✓"; position: absolute; left: 0; top: 0; width: 18px; height: 18px; border-radius: 50%; background: var(--green); color: #000; font-size: 11px; font-weight: 700; display: grid; place-items: center; }
+
+  table { font-size: 13.5px; }
+  td, th { white-space: normal; }
+  td:first-child { font-weight: 600; }
+  tr.us td { background: var(--green-050); }
+
+  .contact { background: var(--black); color: #fff; padding: 30px 44px; display: flex; flex-wrap: wrap; gap: 24px; justify-content: space-between; align-items: center; }
+  .contact h2 { margin: 0 0 4px; }
+  .contact p { color: #9a9a9a; margin: 0; font-size: 14px; }
+  .contact .lines { display: grid; gap: 4px; font-size: 14px; }
+  .contact .lines a { color: var(--green); text-decoration: none; }
+  .actions { text-align: center; padding: 0 0 32px; }
+
+  @media (max-width: 760px) {
+    .top, .body, .contact { padding-left: 22px; padding-right: 22px; }
+    .facts { grid-template-columns: repeat(2, 1fr); }
+    .two, .mv, .plans, .offer { grid-template-columns: 1fr; }
+  }
+
+  @media print {
+    @page { size: A4; margin: 10mm; }
+    body { background: #fff; }
+    .sheet { width: 100%; margin: 0; box-shadow: none; border-radius: 0; }
+    .actions { display: none; }
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    section, .plan, .card { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<div class="sheet">
+
+  <header class="top">
+    <div class="brand">
+      <img src="assets/img/pp-logo.svg" alt="PumpPay logo">
+      <div><b>PumpPay</b><small>Business Profile · A product of Tafiti R&amp;I Hub</small></div>
+    </div>
+    <h1>Smart solar pumping, <span>paid the way farmers earn.</span></h1>
+    <p>PumpPay is a locally manufactured solar pump controller that switches on when the farmer pays by M-Pesa. Farmers either pay daily until they own the system (Pay As You Go) or buy only the pumping hours they need (Pay As You Use).</p>
+    <div class="facts">
+      <div><b>Kenya</b><span>Designed &amp; assembled locally</span></div>
+      <div><b>M-Pesa</b><span>Instant auto-unlock</span></div>
+      <div><b>PAYG · PAYU</b><span>Two flexible payment plans</span></div>
+      <div><b>24/7</b><span>Remote monitoring over GSM</span></div>
+    </div>
+  </header>
+
+  <main class="body">
+
+    <section class="two">
+      <div>
+        <span class="eyebrow">Who we are</span>
+        <h2>About PumpPay</h2>
+        <p>PumpPay is developed by <b>Tafiti Research &amp; Innovation Hub</b>, a Kenyan engineering and innovation team working in solar energy, embedded electronics and IoT.</p>
+        <p>We pair hardware we build ourselves with a payments and monitoring platform: a controller on the farm, a client app on the farmer's phone, and an admin dashboard for our field team.</p>
+      </div>
+      <div>
+        <span class="eyebrow">The problem</span>
+        <h2>Why it matters</h2>
+        <ul class="ticks">
+          <li>Diesel pumping is expensive and prices keep rising.</li>
+          <li>A full solar pumping system costs too much to pay for upfront.</li>
+          <li>Imported controllers are hard to repair and get support for locally.</li>
+          <li>Suppliers have no simple way to finance farmers and collect payments.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="mv">
+      <div><h3>Mission</h3><p>To make reliable solar irrigation affordable for every farm by letting farmers pay in small amounts, as they grow.</p></div>
+      <div><h3>Vision</h3><p>To be East Africa's trusted, locally made platform for pay-as-you-go solar water pumping.</p></div>
+    </section>
+
+    <section>
+      <span class="eyebrow">What we offer</span>
+      <h2>Products &amp; services</h2>
+      <div class="offer">
+        <div class="card"><span class="tag">Hardware</span><h3>Smart Pump Controller</h3><p>MPPT solar controller with GSM, M-Pesa unlock, dry-run protection, scheduling and anti-theft lock.</p></div>
+        <div class="card"><span class="tag">Software</span><h3>Client App &amp; Dashboard</h3><p>Android app to pay and track balance, water and pump hours; web admin for customers, devices and payments.</p></div>
+        <div class="card"><span class="tag">Solutions</span><h3>Complete Solar Kits</h3><p>Pump kits, panels, drip kits and tank level sensors, sold for cash or added to a PAYG plan.</p></div>
+      </div>
+    </section>
+
+    <section>
+      <span class="eyebrow">Business model</span>
+      <h2>Two ways to pay</h2>
+      <div class="plans">
+        <div class="plan dark">
+          <h3>Pay As You Go</h3>
+          <div class="sub">Pay daily until you own it</div>
+          <div class="price">from KES 150 / day</div>
+          <ul>
+            <li>Small deposit, then daily, weekly or monthly payments</li>
+            <li>System becomes the farmer's after full payment</li>
+            <li>Free servicing while on plan</li>
+          </ul>
+        </div>
+        <div class="plan">
+          <h3>Pay As You Use</h3>
+          <div class="sub">Pay only for the hours you pump</div>
+          <div class="price">from KES 40 / hour</div>
+          <ul>
+            <li>Low installation fee, no long-term contract</li>
+            <li>Buy pumping hours in bundles; unused hours never expire</li>
+            <li>Ideal for seasonal farming; upgrade to PAYG any time</li>
+          </ul>
+        </div>
+      </div>
+      <p class="muted" style="font-size:13px;margin-top:10px">Starting prices. Final plan depends on pump size, water source and farm.</p>
+    </section>
+
+    <section class="two">
+      <div>
+        <span class="eyebrow">Target market</span>
+        <h2>Who we serve</h2>
+        <ul class="ticks">
+          <li><b>Medium and large-scale irrigation farmers</b> moving off diesel or grid pumping.</li>
+          <li><b>Companies offering pumping solutions</b> that want a controller with built-in PAYG payment collection.</li>
+          <li>Farmer groups, cooperatives and institutions with shared water sources.</li>
+        </ul>
+      </div>
+      <div>
+        <span class="eyebrow">Why PumpPay</span>
+        <h2>Our value</h2>
+        <ul class="ticks">
+          <li><b>Reliability:</b> protection against dry-running, over-current and tampering.</li>
+          <li><b>Longevity:</b> built for Kenyan field conditions and easy to repair.</li>
+          <li><b>Local presence:</b> made in Kenya, with spares and technicians close to the farm.</li>
+          <li><b>Built-in finance:</b> M-Pesa collection and remote lock and unlock.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <span class="eyebrow">Market position</span>
+      <h2>How we compare</h2>
+      <p style="font-size:14px">We compete with established solar irrigation brands and open-market controllers by being locally made, easy to repair and having pay-as-you-go built in.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th></th><th>Running cost</th><th>Upfront cost</th><th>Pay in instalments</th><th>Remote monitoring</th><th>Local repair &amp; spares</th></tr></thead>
+          <tbody>
+            <tr class="us"><td>PumpPay solar</td><td>Free sunlight</td><td>Small deposit</td><td>Yes, PAYG or PAYU via M-Pesa</td><td>Yes, in the app</td><td>Yes, made in Kenya</td></tr>
+            <tr><td>Diesel pump</td><td>High, rises with fuel price</td><td>Moderate</td><td>Rarely</td><td>No</td><td>Yes</td></tr>
+            <tr><td>Typical imported solar controller</td><td>Free sunlight</td><td>Full price upfront</td><td>Usually no</td><td>Rarely</td><td>Limited</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="contact">
+    <div>
+      <h2>Let's power your farm</h2>
+      <p>Free site visit and water-source assessment.</p>
+    </div>
+    <div class="lines">
+      <span>📞 <a href="tel:+254701326554">+254 701 326 554</a></span>
+      <span>✉ <a href="mailto:tafitiinnovationhub@gmail.com">tafitiinnovationhub@gmail.com</a></span>
+      <span>🌐 <a href="https://tafitirnihub.co.ke">tafitirnihub.co.ke</a> · <a href="./">PumpPay site</a></span>
+    </div>
+  </footer>
+</div>
+
+<div class="actions">
+  <button class="btn btn-black" onclick="window.print()">Print / Save as PDF</button>
+  <a class="btn btn-outline" href="./">Back to website</a>
+</div>
+
+</body>
+</html>

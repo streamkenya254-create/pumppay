@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PumpPay Admin</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="../assets/img/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/css/theme.css">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+<section id="login" class="login hidden">
+  <form class="card" id="loginForm">
+    <div class="brand"><span class="logo-mark">⚡</span><b data-brand>PumpPay</b> <span class="badge badge-black">Admin</span></div>
+    <div class="field"><label>Email</label><input name="email" type="email" required autocomplete="username"></div>
+    <div class="field"><label>Password</label><input name="password" type="password" required autocomplete="current-password"></div>
+    <button class="btn btn-green btn-block">Sign in</button>
+    <p class="muted small" id="loginNote"></p>
+  </form>
+</section>
+
+<div id="shell" class="shell hidden">
+  <aside class="side" id="side">
+    <div class="brand"><span class="logo-mark">⚡</span><b data-brand>PumpPay</b></div>
+    <nav id="menu">
+      <a data-v="overview" class="on">📊 Overview</a>
+      <a data-v="customers">👥 Customers</a>
+      <a data-v="devices">🎛 Controllers</a>
+      <a data-v="payments">💳 Payments</a>
+      <a data-v="plans">📐 Plans</a>
+      <a data-v="products">🛒 Products</a>
+      <a data-v="orders">📦 Orders <span class="cnt" id="cntOrders"></span></a>
+      <a data-v="leads">🌱 Leads <span class="cnt" id="cntLeads"></span></a>
+      <a data-v="tickets">🛠 Tickets <span class="cnt" id="cntTickets"></span></a>
+      <a data-v="settings">⚙ Settings</a>
+    </nav>
+    <div class="side-foot"><span class="small muted" id="who"></span><button class="btn btn-sm btn-outline" id="logout">Log out</button></div>
+  </aside>
+
+  <main class="main">
+    <header class="bar">
+      <button class="burger" id="burger">☰</button>
+      <h1 id="title">Overview</h1>
+      <div class="flex"><input id="search" placeholder="Search…" class="search"><button class="btn btn-green btn-sm hidden" id="addBtn">+ Add</button></div>
+    </header>
+
+    <section data-view="overview" class="view">
+      <div class="kpis" id="kpis"></div>
+      <div class="grid two">
+        <div class="card"><h3>Revenue — last 30 days</h3><div id="chart" class="chart"></div></div>
+        <div class="card"><h3>Plan mix</h3><div id="mix"></div></div>
+      </div>
+      <div class="card"><h3>Latest payments</h3><div class="table-wrap"><table id="tLatest"></table></div></div>
+    </section>
+
+    <section data-view="customers" class="view hidden"><div class="card"><div class="table-wrap"><table id="tCustomers"></table></div></div></section>
+    <section data-view="devices" class="view hidden"><div class="card"><div class="table-wrap"><table id="tDevices"></table></div></div></section>
+    <section data-view="payments" class="view hidden"><div class="card"><div class="table-wrap"><table id="tPayments"></table></div></div></section>
+    <section data-view="plans" class="view hidden"><div class="card"><div class="table-wrap"><table id="tPlans"></table></div></div></section>
+    <section data-view="products" class="view hidden"><div class="card"><div class="table-wrap"><table id="tProducts"></table></div></div></section>
+    <section data-view="orders" class="view hidden"><div class="card"><div class="table-wrap"><table id="tOrders"></table></div></div></section>
+    <section data-view="leads" class="view hidden"><div class="card"><div class="table-wrap"><table id="tLeads"></table></div></div></section>
+    <section data-view="tickets" class="view hidden"><div class="card"><div class="table-wrap"><table id="tTickets"></table></div></div></section>
+    <section data-view="settings" class="view hidden">
+      <div class="card">
+        <h3>Starter data</h3>
+        <p class="muted">Creates the default Pay As You Go and Pay As You Use plans and starter products (skips any that already exist).</p>
+        <button class="btn btn-black" id="seedBtn">Seed default plans & products</button>
+      </div>
+      <div class="card">
+        <h3>Controller API</h3>
+        <p class="muted">Each controller polls this endpoint over GSM with its serial and secret key:</p>
+        <pre class="code" id="apiInfo"></pre>
+      </div>
+      <div class="card">
+        <h3>Adding another admin</h3>
+        <p class="muted">Create the user in Firebase Console → Authentication, then add a document <code>admins/&lt;their UID&gt;</code> with field <code>role: "admin"</code>.</p>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- generic modal -->
+<div class="modal" id="modal"><div class="card">
+  <div class="flex between"><h3 id="mTitle">—</h3><button class="x" id="mClose">✕</button></div>
+  <form id="mForm"></form>
+</div></div>
+
+<script type="module" src="admin.js"></script>
+</body>
+</html>

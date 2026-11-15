@@ -1,0 +1,1 @@
+  mCurrentFocus=Window{1830846 u0 ke.tafiti.pumppay/ke.tafiti.pumppay.MainActivity}

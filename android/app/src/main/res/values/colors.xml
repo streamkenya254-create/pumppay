@@ -1,0 +1,5 @@
+<resources>
+    <color name="green">#59F223</color> <!-- RGB 89,242,35 -->
+    <color name="black">#0B0B0B</color>
+    <color name="white">#FFFFFF</color>
+</resources>

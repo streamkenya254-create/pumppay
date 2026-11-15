@@ -1,0 +1,11 @@
+{
+  "indexes": [
+    { "collectionGroup": "payments", "queryScope": "COLLECTION",
+      "fields": [{ "fieldPath": "customerId", "order": "ASCENDING" }, { "fieldPath": "createdAt", "order": "DESCENDING" }] },
+    { "collectionGroup": "usage", "queryScope": "COLLECTION",
+      "fields": [{ "fieldPath": "customerId", "order": "ASCENDING" }, { "fieldPath": "ts", "order": "ASCENDING" }] },
+    { "collectionGroup": "orders", "queryScope": "COLLECTION",
+      "fields": [{ "fieldPath": "customerId", "order": "ASCENDING" }, { "fieldPath": "createdAt", "order": "DESCENDING" }] }
+  ],
+  "fieldOverrides": []
+}
