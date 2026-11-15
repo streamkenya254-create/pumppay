@@ -46,6 +46,6 @@ export const DEFAULT_PLANS = [
 export const DEFAULT_PRODUCTS = [
   { id: "ctrl", name: "PumpPay Smart Controller", price: 24500, emoji: "🎛", desc: "GSM-connected MPPT pump controller with M-Pesa unlock.", active: true },
   { id: "kit-1hp", name: "1HP Solar Pump Kit", price: 89900, emoji: "☀", desc: "Pump, 4× panels, controller and installation. PAYG available.", active: true },
-  { id: "drip", name: "Drip Kit — ¼ Acre", price: 18500, emoji: "💧", desc: "Laterals, drippers, filter and fittings for ¼ acre.", active: true },
+  { id: "drip", name: "Drip Kit — ¼ Acre", price: 18500, emoji: "💧", imageUrl: "assets/img/drip-kit.jpg", desc: "Laterals, drippers, filter and fittings for ¼ acre.", active: true },
   { id: "tank", name: "Tank Level Sensor", price: 4500, emoji: "📡", desc: "Auto-stop when your tank is full. Shows level in the app.", active: true },
 ];
