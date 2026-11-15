@@ -85,7 +85,7 @@ $("leadForm").addEventListener("submit", async (e) => {
   window.open("https://wa.me/" + BRAND.whatsapp + "?text=" + encodeURIComponent(lines.join("\n")), "_blank");
   e.target.reset();
   toast("Opening WhatsApp - tap send to reach our team.");
-  } finally { btn.disabled = false; btn.textContent = "Request a call back"; }
+  btn.disabled = false; btn.textContent = "Request a call back";
 });
 
 // ---------- Load live data (falls back to defaults) ----------

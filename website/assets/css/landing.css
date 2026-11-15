@@ -120,3 +120,5 @@ details p { color: var(--grey); margin: 12px 0 0; }
   .section { padding: 64px 0; }
   .nav-cta .btn-green { display: none; }
 }
+
+.hero-photo { display: block; width: 100%; height: auto; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 28px; border: 1px solid rgba(89,242,35,.35); box-shadow: 0 24px 60px rgba(0,0,0,.45), 0 0 0 6px rgba(89,242,35,.08); }
