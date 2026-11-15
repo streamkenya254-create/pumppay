@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Water pump: motor, casing and outlet pipe. The impeller is a separate drawable so it can spin. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="96dp" android:height="96dp"
+    android:viewportWidth="100" android:viewportHeight="100">
+    <path android:fillColor="#0A0C0F" android:strokeColor="#F2F5F8" android:strokeWidth="3"
+        android:strokeLineJoin="round"
+        android:pathData="M10,48 H42 V74 H10 Z" />
+    <path android:strokeColor="#79848F" android:strokeWidth="2" android:strokeLineCap="round"
+        android:pathData="M18,48 V74 M26,48 V74 M34,48 V74" />
+    <path android:fillColor="#0A0C0F" android:strokeColor="#F2F5F8" android:strokeWidth="3"
+        android:pathData="M64,61 m-20,0 a20,20 0 1,0 40,0 a20,20 0 1,0 -40,0" />
+    <path android:strokeColor="#F2F5F8" android:strokeWidth="6" android:strokeLineCap="round" android:strokeLineJoin="round"
+        android:pathData="M64,41 V22 H90" />
+    <path android:strokeColor="#F2F5F8" android:strokeWidth="3" android:strokeLineCap="round"
+        android:pathData="M6,82 H94" />
+</vector>

@@ -1,0 +1,13 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!--
+      A bare Material3 shell. Everything visible is themed in Compose - this
+      exists only so the window and the splash before Compose starts are the
+      right colour rather than flashing white.
+    -->
+    <style name="Theme.PumpPay" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">#000000</item>
+        <item name="android:statusBarColor">#000000</item>
+        <item name="android:navigationBarColor">#000000</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+</resources>

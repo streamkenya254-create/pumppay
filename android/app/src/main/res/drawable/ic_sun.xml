@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The sun, centred at (84,12) in a 100x100 box so it can be rotated about that point. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="96dp" android:height="96dp"
+    android:viewportWidth="100" android:viewportHeight="100">
+    <path android:fillColor="#59F223" android:pathData="M84,12 m-6,0 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0" />
+    <path android:strokeColor="#59F223" android:strokeWidth="2" android:strokeLineCap="round"
+        android:pathData="M84,2 V4 M84,20 V22 M74,12 H76 M92,12 H94 M77,5 L78.5,6.5 M89.5,17.5 L91,19 M91,5 L89.5,6.5 M78.5,17.5 L77,19" />
+</vector>

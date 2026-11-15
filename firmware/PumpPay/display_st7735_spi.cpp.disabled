@@ -1,0 +1,260 @@
+#include "display.h"
+#include "board_pins.h"
+#include "power_meter.h"
+#include "source_select.h"
+#include "ethernet.h"
+
+#include <SPI.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_ST7735.h>
+
+namespace Display {
+namespace {
+
+// This module reads the other modules directly, which power_meter deliberately
+// does not do. That is not an inconsistency: a view depends on what it shows by
+// nature, whereas power_meter is a peer that would have been coupled to a
+// sibling for no reason. Dependencies point inward, to the display, never out.
+
+constexpr uint32_t FIELD_MS  = 60;    // one field per this interval
+constexpr uint8_t  FIELD_MAX = 8;     // fields cycled through
+
+// ---- Panel variant --------------------------------------------------------
+// The tab colour refers to a plastic tag on the original panel batch and is
+// not visible on a finished module, so it is found by trying:
+//
+//   INITR_BLACKTAB   most common on a 1.8in 128x160
+//   INITR_GREENTAB   try if BLACKTAB leaves a stray pixel border down an edge
+//   INITR_REDTAB     try if BLACKTAB comes out with inverted colours
+//
+// Worth knowing before changing it: a WRONG variant still draws something -
+// shifted, bordered, or inverted. A screen that lights but stays blank is a
+// wiring or reset fault, not this.
+constexpr uint8_t PANEL_INIT = INITR_BLACKTAB;
+
+// Boot colour test. Fills the screen red, green, then blue before the normal
+// layout is drawn. It answers one question definitively:
+//
+//   colours appear  -> SPI and the D/C line both work. Any remaining fault is
+//                      the panel variant, the rotation, or the layout.
+//   screen stays blank -> nothing is reaching the controller. D/C is the first
+//                      suspect: it is the flying lead to GPIO 2 and it is NOT
+//                      on J1, so a display wired through the connector alone
+//                      has no D/C at all and behaves exactly like this.
+//
+// The delays here are in begin(), which runs from setup(). The no-delay rule
+// applies to loop(), where a stall would starve the relay and the link check.
+#define DISPLAY_BOOT_TEST 1
+constexpr uint32_t BOOT_TEST_MS = 400;
+
+// 128x160 panel, used in landscape so it is 160 wide by 128 tall.
+constexpr int16_t W = 160;
+constexpr int16_t H = 128;
+
+// ST77XX_* has no grey, so these two are raw RGB565.
+constexpr uint16_t C_BG    = ST77XX_BLACK;
+constexpr uint16_t C_LABEL = 0x7BCF;          // mid grey
+constexpr uint16_t C_STALE = 0x4A69;          // dark grey - "no reading yet"
+constexpr uint16_t C_VALUE = ST77XX_WHITE;
+constexpr uint16_t C_SOLAR = ST77XX_YELLOW;
+constexpr uint16_t C_MAINS = ST77XX_ORANGE;
+constexpr uint16_t C_OK    = ST77XX_GREEN;
+constexpr uint16_t C_BAD   = ST77XX_RED;
+
+// Column geometry. Values are text size 2 (12 px per character), so a column
+// 62 px wide holds five characters - enough for "231.4".
+constexpr int16_t COL_LBL   = 2;
+constexpr int16_t COL_SOLAR = 32;
+constexpr int16_t COL_MAINS = 97;
+constexpr int16_t COL_W     = 62;
+
+constexpr int16_t ROW_V  = 34;
+constexpr int16_t ROW_A  = 58;
+constexpr int16_t ROW_VA = 82;
+
+// ---- SPI transport --------------------------------------------------------
+// Hardware HSPI, or bit-banged software SPI.
+//
+// Hardware is faster and is what this board is wired for: SCLK 14 and MOSI 13
+// are HSPI's own IO-MUX pins. Software SPI drives the same two pins as plain
+// GPIOs - perhaps a tenth of the speed, which this screen never notices, since
+// a full refresh is already spread across eight ticks.
+//
+// SET THIS TO 1 IF THE PANEL WORKS IN A STANDALONE SKETCH BUT NOT HERE. Almost
+// every ST7735 example that uses non-default pins reaches for the five-argument
+// constructor, and that constructor IS software SPI. If a working test sketch
+// and this module differ only in transport, this flag finds it in one flash -
+// and if it lights up, the fault is the hardware bus, not the wiring.
+#define DISPLAY_USE_SOFTWARE_SPI 0
+
+#if DISPLAY_USE_SOFTWARE_SPI
+// Software SPI: cs, dc, mosi, sclk, rst. RESET is -1 - tied to 3.3 V on this
+// board, so the library issues SWRESET instead of pulsing a pin.
+Adafruit_ST7735  s_tft(PIN_SPI_CS, PIN_SPI_DC, PIN_SPI_MOSI, PIN_SPI_SCLK, -1);
+#else
+SPIClass         s_spi(HSPI);
+Adafruit_ST7735  s_tft(&s_spi, PIN_SPI_CS, PIN_SPI_DC, -1);   // -1: RESET tied to 3.3 V
+#endif
+
+uint8_t  s_field    = 0;
+uint32_t s_lastDraw = 0;
+
+// Last drawn text per field, so an unchanged value costs nothing.
+char s_shown[FIELD_MAX][16] = { { 0 } };
+
+void drawField(uint8_t idx, int16_t x, int16_t y, int16_t w,
+               const char* text, uint16_t colour, uint8_t size) {
+  if (strncmp(s_shown[idx], text, sizeof(s_shown[0]) - 1) == 0) return;
+  strncpy(s_shown[idx], text, sizeof(s_shown[0]) - 1);
+  s_shown[idx][sizeof(s_shown[0]) - 1] = '\0';
+
+  const int16_t h = static_cast<int16_t>(8 * size + 2);
+  s_tft.fillRect(x, y - 1, w, h, C_BG);
+  s_tft.setCursor(x, y);
+  s_tft.setTextColor(colour);
+  s_tft.setTextSize(size);
+  s_tft.print(text);
+}
+
+// Formats a reading, or dashes when the channel has no valid data yet.
+void format(char* out, size_t n, float value, bool ok, uint8_t decimals) {
+  if (!ok) { strncpy(out, "---", n - 1); out[n - 1] = '\0'; return; }
+  dtostrf(value, 0, decimals, out);
+}
+
+void drawStatic() {
+  s_tft.fillScreen(C_BG);
+
+  s_tft.setTextColor(C_VALUE);
+  s_tft.setTextSize(1);
+  s_tft.setCursor(2, 3);
+  s_tft.print("ENERGYHUB V2");
+
+  s_tft.drawFastHLine(0, 14, W, C_LABEL);
+
+  s_tft.setTextSize(1);
+  s_tft.setTextColor(C_SOLAR);
+  s_tft.setCursor(COL_SOLAR, 20);
+  s_tft.print("SOLAR");
+  s_tft.setTextColor(C_MAINS);
+  s_tft.setCursor(COL_MAINS, 20);
+  s_tft.print("MAINS");
+
+  s_tft.setTextSize(1);
+  s_tft.setTextColor(C_LABEL);
+  s_tft.setCursor(COL_LBL, ROW_V + 4);   s_tft.print("V");
+  s_tft.setCursor(COL_LBL, ROW_A + 4);   s_tft.print("A");
+  s_tft.setCursor(COL_LBL, ROW_VA + 4);  s_tft.print("VA");
+
+  s_tft.drawFastHLine(0, 106, W, C_LABEL);
+}
+
+// One field per call. Keeps the longest SPI burst short enough that loop()
+// stays responsive for the relay and the Ethernet link check.
+void drawOne(uint8_t field) {
+  char buf[16];
+
+  const PowerMeter::Reading solar = PowerMeter::read(PowerMeter::Line::Solar);
+  const PowerMeter::Reading mains = PowerMeter::read(PowerMeter::Line::Mains);
+
+  switch (field) {
+    case 0: {
+      const bool onSolar = (SourceSelect::get() == SourceSelect::Source::Solar);
+      drawField(0, 95, 3, 63, onSolar ? "ON SOLAR" : "ON MAINS",
+                onSolar ? C_SOLAR : C_MAINS, 1);
+      break;
+    }
+    case 1:
+      format(buf, sizeof(buf), solar.volts, solar.voltsOk, 1);
+      drawField(1, COL_SOLAR, ROW_V, COL_W, buf, solar.voltsOk ? C_VALUE : C_STALE, 2);
+      break;
+    case 2:
+      format(buf, sizeof(buf), solar.amps, solar.ampsOk, 2);
+      drawField(2, COL_SOLAR, ROW_A, COL_W, buf, solar.ampsOk ? C_VALUE : C_STALE, 2);
+      break;
+    case 3:
+      format(buf, sizeof(buf), solar.va, solar.voltsOk && solar.ampsOk, 0);
+      drawField(3, COL_SOLAR, ROW_VA, COL_W, buf,
+                (solar.voltsOk && solar.ampsOk) ? C_VALUE : C_STALE, 2);
+      break;
+    case 4:
+      format(buf, sizeof(buf), mains.volts, mains.voltsOk, 1);
+      drawField(4, COL_MAINS, ROW_V, COL_W, buf, mains.voltsOk ? C_VALUE : C_STALE, 2);
+      break;
+    case 5:
+      format(buf, sizeof(buf), mains.amps, mains.ampsOk, 2);
+      drawField(5, COL_MAINS, ROW_A, COL_W, buf, mains.ampsOk ? C_VALUE : C_STALE, 2);
+      break;
+    case 6:
+      format(buf, sizeof(buf), mains.va, mains.voltsOk && mains.ampsOk, 0);
+      drawField(6, COL_MAINS, ROW_VA, COL_W, buf,
+                (mains.voltsOk && mains.ampsOk) ? C_VALUE : C_STALE, 2);
+      break;
+    case 7: {
+      if (Net::linkUp()) {
+        const IPAddress ip = Net::ip();
+        snprintf(buf, sizeof(buf), "%u.%u.%u.%u", ip[0], ip[1], ip[2], ip[3]);
+        drawField(7, COL_LBL, 112, W - 4, buf, C_OK, 1);
+      } else {
+        drawField(7, COL_LBL, 112, W - 4, "eth: no link", C_BAD, 1);
+      }
+      break;
+    }
+    default:
+      break;
+  }
+}
+
+}  // namespace
+
+void begin() {
+#if !DISPLAY_USE_SOFTWARE_SPI
+  // HSPI so SCLK 14 and MOSI 13 take the fast IO-MUX route. MISO is -1: the
+  // display never sends anything back, which is what frees GPIO 2 for DC.
+  //
+  // This must run BEFORE initR(). Adafruit_SPITFT::initSPI() calls begin() on
+  // the bus with no arguments, and the core returns early if the bus is already
+  // started - so starting it here first is what makes the custom pins stick.
+  s_spi.begin(PIN_SPI_SCLK, -1, PIN_SPI_MOSI, PIN_SPI_CS);
+#endif
+  // RESET is tied to 3.3 V on this board rather than a GPIO, so the -1 passed
+  // to the constructor makes the library issue a SOFTWARE reset (SWRESET) at
+  // the head of the init sequence instead of pulsing the pin. That is normally
+  // fine - but it only works if commands are reaching the controller at all,
+  // which is precisely what the boot test below checks.
+  s_tft.initR(PANEL_INIT);
+  s_tft.setRotation(1);          // landscape, 160x128
+
+#if DISPLAY_BOOT_TEST
+  Serial.println("[lcd] boot test: red, green, blue - if the screen stays");
+  Serial.println("[lcd]   blank through all three, D/C on GPIO 2 is the first");
+  Serial.println("[lcd]   thing to check (flying lead, not on J1)");
+  s_tft.fillScreen(ST77XX_RED);
+  delay(BOOT_TEST_MS);
+  s_tft.fillScreen(ST77XX_GREEN);
+  delay(BOOT_TEST_MS);
+  s_tft.fillScreen(ST77XX_BLUE);
+  delay(BOOT_TEST_MS);
+#endif
+
+  // The ST7735 has no readable status register, so unlike the ILI9341 there is
+  // no way to detect whether a panel is attached. Drawing is unconditional; a
+  // missing display just means the writes go nowhere.
+  Serial.println("[lcd] ST7735 128x160 initialised (no presence check possible)");
+
+  drawStatic();
+  s_lastDraw = millis();
+}
+
+void tick() {
+  const uint32_t now = millis();
+  if (now - s_lastDraw < FIELD_MS) return;
+  s_lastDraw = now;
+
+  drawOne(s_field);
+  s_field = static_cast<uint8_t>((s_field + 1) % FIELD_MAX);
+}
+
+bool present() { return true; }   // not detectable on this controller
+
+}  // namespace Display

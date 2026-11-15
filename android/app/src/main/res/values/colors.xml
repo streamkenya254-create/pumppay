@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+      The near-black the app uses throughout. The PumpPay mark is a green disc
+      with a black bolt, so it needs a dark tile behind it - on a white
+      launcher background the disc would lose its edge.
+    -->
+    <color name="ic_launcher_background">#0B0B0B</color>
+</resources>

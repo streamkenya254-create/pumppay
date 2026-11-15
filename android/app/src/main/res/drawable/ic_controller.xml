@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Solar pump controller enclosure. The status LED is a separate drawable so it can blink. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="96dp" android:height="96dp"
+    android:viewportWidth="100" android:viewportHeight="100">
+    <path android:strokeColor="#F2F5F8" android:strokeWidth="3" android:strokeLineCap="round"
+        android:pathData="M50,6 V24 M50,76 V94" />
+    <path android:fillColor="#0A0C0F" android:strokeColor="#F2F5F8" android:strokeWidth="3"
+        android:strokeLineJoin="round"
+        android:pathData="M26,24 H74 A6,6 0 0 1 80,30 V70 A6,6 0 0 1 74,76 H26 A6,6 0 0 1 20,70 V30 A6,6 0 0 1 26,24 Z" />
+    <path android:fillColor="#1659F223" android:strokeColor="#59F223" android:strokeWidth="2"
+        android:pathData="M29,32 H71 V48 H29 Z" />
+    <path android:strokeColor="#59F223" android:strokeWidth="2" android:strokeLineCap="round"
+        android:pathData="M33,40 H42 M47,40 H62" />
+    <path android:fillColor="#79848F"
+        android:pathData="M48,61 m-3,0 a3,3 0 1,0 6,0 a3,3 0 1,0 -6,0 M58,61 m-3,0 a3,3 0 1,0 6,0 a3,3 0 1,0 -6,0 M68,61 m-3,0 a3,3 0 1,0 6,0 a3,3 0 1,0 -6,0" />
+</vector>

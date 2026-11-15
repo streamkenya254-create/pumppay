@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- One water drop at the mouth of the outlet pipe, so it can be animated falling. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="96dp" android:height="96dp"
+    android:viewportWidth="100" android:viewportHeight="100">
+    <path android:fillColor="#59F223" android:pathData="M90,26 q-4,6 0,9 q4,-3 0,-9z" />
+</vector>

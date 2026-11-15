@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Solar panel on a stand. The sun is a separate drawable so it can animate. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="96dp" android:height="96dp"
+    android:viewportWidth="100" android:viewportHeight="100">
+    <path android:fillColor="#1659F223" android:strokeColor="#F2F5F8" android:strokeWidth="3"
+        android:strokeLineJoin="round"
+        android:pathData="M18,64 L34,28 H86 L70,64 Z" />
+    <path android:strokeColor="#79848F" android:strokeWidth="1.8" android:strokeLineCap="round"
+        android:pathData="M47,28 L31,64 M60,28 L44,64 M73,28 L57,64 M28.7,40 H80.7 M23.3,52 H75.3" />
+    <path android:strokeColor="#F2F5F8" android:strokeWidth="3" android:strokeLineCap="round"
+        android:pathData="M44,64 V84 M30,84 H58" />
+</vector>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Adaptive icon foreground.
+
+  The canvas is 108dp but launchers mask it down to roughly the middle 72dp -
+  a circle, a squircle, a rounded square, whatever the device prefers. Anything
+  outside that safe zone can be cropped, so the logo is inset on each side
+  to land inside it whatever mask is applied.
+
+  30dp, not the 18dp the safe zone strictly allows. Filling the safe zone edge
+  to edge makes a mark look oversized next to neighbouring icons, which nearly
+  all leave breathing room inside their tile. This leaves the logo at roughly
+  48dp of the 108dp canvas - about two thirds of the masked area, which is
+  where most app marks sit.
+
+  Explicit dp rather than a percentage: percentages on InsetDrawable behave
+  differently across versions, and this has to be right on every launcher.
+-->
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/ic_logo"
+    android:insetLeft="30dp"
+    android:insetTop="30dp"
+    android:insetRight="30dp"
+    android:insetBottom="30dp" />

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Pump impeller, centred at (64,61) in a 100x100 box so it can be rotated about that point. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="96dp" android:height="96dp"
+    android:viewportWidth="100" android:viewportHeight="100">
+    <path android:strokeColor="#59F223" android:strokeWidth="3.5" android:strokeLineCap="round"
+        android:pathData="M64,61 L64,48 M64,61 L75.3,67.5 M64,61 L52.7,67.5" />
+    <path android:fillColor="#59F223" android:pathData="M64,61 m-3.5,0 a3.5,3.5 0 1,0 7,0 a3.5,3.5 0 1,0 -7,0" />
+</vector>

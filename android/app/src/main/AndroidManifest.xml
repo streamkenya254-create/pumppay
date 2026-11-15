@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+      Bluetooth permissions split at API 31. Before that, BLUETOOTH and
+      BLUETOOTH_ADMIN were install-time permissions; from 31 they were replaced
+      by BLUETOOTH_CONNECT, which is a runtime permission the user must grant.
+      Both sets are declared, each capped to the range where it applies, so a
+      single APK works on Android 8 through 14 without asking for more than it
+      needs on either.
+
+      BLUETOOTH_SCAN is deliberately absent. This app only talks to devices
+      already paired in Android settings, and asking to scan would mean asking
+      for a permission the user can reasonably refuse for a device that is
+      already bonded.
+    -->
+    <uses-permission android:name="android.permission.BLUETOOTH"
+        android:maxSdkVersion="30" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"
+        android:maxSdkVersion="30" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+
+    <!-- The Shop and About us pages open the Tafiti site inside the app. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- Voice commands: the phone's speech recogniser listens only while the microphone button is on. -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
+    <!-- Plant page: "I'm at the farm" sets the farm's location from the phone. Approximate is enough. -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <queries>
+        <intent><action android:name="android.speech.RecognitionService" /></intent>
+        <intent><action android:name="android.intent.action.TTS_SERVICE" /></intent>
+    </queries>
+
+    <uses-feature android:name="android.hardware.bluetooth" android:required="true" />
+    <uses-feature android:name="android.hardware.microphone" android:required="false" />
+    <uses-feature android:name="android.hardware.location" android:required="false" />
+
+    <application
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.PumpPay">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.PumpPay">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
