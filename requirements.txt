@@ -1,0 +1,20 @@
+# Python Dependencies for Kenya Agricultural Intelligence Platform & NASA Earthdata
+# Python 3.12+
+
+# Core Scientific & Data Processing
+numpy>=2.0.0
+pandas>=2.2.0
+scipy>=1.12.0
+scikit-learn>=1.4.0
+joblib>=1.3.0
+
+# Geospatial & Satellite Data Formats
+rasterio>=1.4.0
+netCDF4>=1.7.0
+h5py>=3.12.0
+
+# HTTP & APIs
+requests>=2.32.0
+
+# NASA Earthdata Official Access Library
+earthaccess>=0.12.0

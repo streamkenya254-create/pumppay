@@ -1,0 +1,22 @@
+# build output
+build/
+.gradle/
+node_modules/
+.idea/
+*.iml
+*.log
+android/.gradle/
+android/app/build/
+
+# per-machine
+local.properties
+android/local.properties
+
+# secrets: never commit
+.env
+**/.env
+*KEY*.txt
+*.keystore
+*.jks
+google-services.json
+serviceAccount*.json
