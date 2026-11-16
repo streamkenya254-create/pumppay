@@ -22,3 +22,4 @@ serviceAccount*.json
 *.apk
 *.aab
 *.bin
+!releases/*.apk

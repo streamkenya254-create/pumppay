@@ -11,6 +11,15 @@
 [![OpenWeatherMap](https://img.shields.io/badge/OpenWeather-5--Day%20Forecast-EB6E4B?style=for-the-badge&logo=openweathermap&logoColor=white)](https://openweathermap.org/)
 [![ISRIC SoilGrids 2.0](https://img.shields.io/badge/ISRIC-SoilGrids%202.0-2E7D32?style=for-the-badge)](https://www.isric.org/explore/soilgrids)
 
+<p align="center">
+  <a href="https://github.com/streamkenya254-create/pumppay/raw/main/releases/PumpPay.apk">
+    <img src="https://img.shields.io/badge/📥_Download_Android_APK-v2.0_Release_(17.7_MB)-59F223?style=for-the-badge&logo=android&logoColor=black" alt="Download APK" />
+  </a>
+  <a href="https://tafitiwebsie.web.app/pumppay/">
+    <img src="https://img.shields.io/badge/🌐_Web_Portal-Live_Site-000000?style=for-the-badge&logo=googlechrome&logoColor=59F223" alt="Web Portal" />
+  </a>
+</p>
+
 **Autonomous Solar Pumping, Prepaid PAYG Infrastructure & NASA Earth Observation Intelligence for Resilient Crop Rotation**
 
 *NASA Space Apps Challenge 2026 — Theme: Field Shift: NASA Earth Observations for Crop Rotation and Resilient Agriculture*
@@ -31,6 +40,30 @@ Smallholder agriculture in Sub-Saharan Africa (and Kenya's Arid and Semi-Arid La
 - **Intelligent Solar Pumping**: An ESP32 MPPT solar controller arbitrates power between solar PV, batteries, and the grid, metering irrigation water on a prepaid Pay-As-You-Go (PAYG) or Pay-As-You-Use (PAYU) basis via Safaricom M-Pesa.
 - **Field Shift AI Crop Rotation Engine**: Fuses **NASA POWER** satellite agro-meteorology, **ISRIC SoilGrids v2.0** digital pedology, **NASA SRTM** digital elevation, and **OpenWeatherMap** hyper-local forecasts into machine learning models that generate optimal, soil-regenerative crop rotation sequences across 12 staple crops.
 - **Farmer-Centric Mobile Experience**: A native Android Jetpack Compose app and PWA portal featuring live telemetry, offline fail-safe token countdowns, interactive farm GIS maps, and a natural voice AI assistant.
+
+---
+
+## 📱 Download & Install Mobile App (APK)
+
+Experience the live solar MPPT monitor, the multi-depth ISRIC soil profile, and the NASA-driven Field Shift crop rotation engine directly on your Android phone.
+
+| Package | Version | Compatibility | File Size | Direct Download Links |
+|---|---|---|---|---|
+| `ke.tafiti.pumppay` | **v2.0.0 (Build 2)** | Android 8.0+ (Oreo, Pie, 10, 11, 12, 13, 14, 15) | **17.7 MB** | [**📥 Direct APK Download (GitHub)**](https://github.com/streamkenya254-create/pumppay/raw/main/releases/PumpPay.apk)<br/>[🌐 Mirror 1 (Hosted Web CDN)](https://tafitiwebsie.web.app/pumppay/PumpPay.apk)<br/>[📦 Mirror 2 (GitHub Master Branch)](https://github.com/streamkenya254-create/pumppay/raw/master/landing-site/PumpPay.apk) |
+
+> [!TIP]
+> **How to Install on Android**:
+> 1. Tap [**📥 Direct APK Download**](https://github.com/streamkenya254-create/pumppay/raw/main/releases/PumpPay.apk) from your phone's browser.
+> 2. If your browser warns *"File might be harmful"*, tap **Download anyway**.
+> 3. Open the downloaded `PumpPay.apk`. If prompted with *"Install unknown apps"*, tap **Settings** and toggle **Allow from this source**.
+> 4. Tap **Install** and then **Open**. Allow Bluetooth permissions when prompted so the app can auto-detect nearby PumpPay controllers.
+
+#### Cryptographic Checksum (Integrity & Security)
+Verify the authenticity of your binary using standard SHA-256:
+```bash
+sha256sum PumpPay.apk
+# Output: a9c341fa3d7580631eebb375381ab399a222be232de41759d9f49601148dd14d
+```
 
 ---
 
