@@ -348,5 +348,11 @@ def run_server(port: int = 5055):
         httpd.server_close()
 
 if __name__ == "__main__":
-    port = int(sys.argv[1]) if len(sys.argv) > 1 else 5055
+    port_env = os.environ.get("PORT")
+    if port_env:
+        port = int(port_env)
+    elif len(sys.argv) > 1:
+        port = int(sys.argv[1])
+    else:
+        port = 5055
     run_server(port)
