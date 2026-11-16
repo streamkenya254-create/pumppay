@@ -1,0 +1,16 @@
+{
+  "model_type": "GradientBoosting + RandomForest Regressor",
+  "task": "FAO-56 ET0 and ETc Crop Water Requirement Prediction",
+  "train_samples": 1200,
+  "test_samples": 300,
+  "et0_metrics": {
+    "r2_score": 0.9919,
+    "rmse_mm_day": 0.1024,
+    "mae_mm_day": 0.0797
+  },
+  "etc_metrics": {
+    "r2_score": 0.9603,
+    "rmse_mm_day": 0.3162,
+    "mae_mm_day": 0.2466
+  }
+}

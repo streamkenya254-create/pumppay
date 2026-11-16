@@ -59,6 +59,50 @@ async function planForFarm(rawFarm, now = new Date()) {
   try { power = await nasaPower(farm.lat, farm.lon, now); }
   catch (e) { return { ok: false, error: "NASA POWER unavailable", status: 502 }; }
   const { days, elevM } = core.powerToDays(power);
+
+  // Check if Field Shift ML microservice is available
+  const mlUrl = process.env.ML_SERVICE_URL || "http://127.0.0.1:5055";
+  try {
+    const usableDays = days.filter((d) => d && d.tmax != null && d.tmin != null);
+    const recentDay = usableDays[usableDays.length - 1] || {};
+    const mlResp = await fetch(`${mlUrl}/predict/plan`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        farm: { ...farm, elevM },
+        weather: {
+          tmax: recentDay.tmax,
+          tmin: recentDay.tmin,
+          rh: recentDay.rh,
+          u2: recentDay.u2,
+          rs: recentDay.rs,
+          rain: recentDay.rain,
+        },
+      }),
+      signal: AbortSignal.timeout(3000),
+    });
+
+    if (mlResp.ok) {
+      const mlData = await mlResp.json();
+      if (mlData && mlData.ok) {
+        const total = core.CROPS[farm.crop]?.stages.reduce((a, b) => a + b, 0) || 120;
+        const day = Math.max(0, Math.floor((now - new Date(farm.plantedOn + "T00:00:00Z")) / 864e5));
+        const lastUsable = usableDays[usableDays.length - 1];
+        return {
+          ...mlData,
+          day,
+          totalDays: total,
+          areaM2: farm.areaM2,
+          dataThrough: lastUsable ? lastUsable.date : now.toISOString().slice(0, 10).replace(/-/g, ""),
+          source: "NASA Earth Observations + Field Shift ML Ensemble",
+        };
+      }
+    }
+  } catch (mlErr) {
+    // Graceful fallback to pure JS irrigation core when ML service is offline
+  }
+
+  // Fallback pure JS calculation
   const plan = core.planIrrigation(days, farm, now, elevM);
   if (!plan.ok) return { ...plan, status: 503 };
   const { series, ...d } = plan;

@@ -1,0 +1,35 @@
+{
+  "model_type": "GradientBoostingRegressor + RandomForestClassifier",
+  "task": "Crop Rotation Recommendation & Suitability",
+  "train_samples": 960,
+  "test_samples": 240,
+  "regression": {
+    "r2_score": 0.9307,
+    "rmse": 7.4166,
+    "mae": 4.6762
+  },
+  "classification": {
+    "accuracy": 0.9167
+  },
+  "features": {
+    "numerical": [
+      "soil_ph",
+      "soil_soc_g_kg",
+      "soil_total_nitrogen_pct",
+      "soil_phosphorus_m3_mg_kg",
+      "soil_potassium_m3_mg_kg",
+      "soil_clay_pct",
+      "soil_wetness_gwettop",
+      "solar_irradiance_kwh",
+      "seasonal_rainfall_mm",
+      "is_monoculture_repeat",
+      "is_nitrogen_enriching",
+      "nitrogen_budget_kg_ha"
+    ],
+    "categorical": [
+      "previous_family",
+      "candidate_family",
+      "previous_pest_history"
+    ]
+  }
+}

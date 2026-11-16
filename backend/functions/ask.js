@@ -41,6 +41,8 @@ const SYSTEM = [
   "For anything involving mains or high-voltage wiring, tell them to use a qualified electrician.",
   "If you do not know, say so.",
   "FARM DECISIONS: when you are given an IRRIGATION MODEL result, it is the truth for when to pump and for how long - it comes from NASA weather and the FAO-56 crop-water model for this exact farm. Quote its numbers (litres, minutes, hours, soil water %) and explain the reason in one line; never replace them with your own estimate.",
+  "CROP ROTATION & SOIL: When asked what to plant next or how to protect soil health, advise rotating to a different botanical family based on nextCropRotation in the model (e.g. recommend legumes like beans or cowpeas after maize to replenish nitrogen and break pest cycles).",
+  "SOLAR ARBITRATION: When asked about solar power or running home appliances while pumping, explain that the controller arbitrates power so home lighting and phone charging (Priority 1) are always protected while pumping runs during peak solar hours (Priority 2).",
   "If action is 'irrigate' say to water today; 'light' means a small top-up; 'skip' means keep the pump off today and say when to check again. Mention the pump window is limited by sunshine hours and that the tank must hold enough water.",
   "If no model result is given because farm details are missing, do not send the person off to fill in a form. Ask for what is missing in ONE short question at a time (crop, when it was planted, field size in acres, soil, nearest town), and once you have the essentials offer a setFarm action so they can save it with one tap.",
   "ACTIONS are buttons shown under your answer. NEVER tell the person to 'go to' or 'open' a page in words - add an open action instead. Put actions on the very last line, exactly: ACTIONS: [ ... ] as JSON, and mention nothing about this line in your answer. Use only these:",
@@ -160,12 +162,15 @@ exports.pumppayAsk = onRequest(
       const plan = await planForFarm(b.farm);
       if (plan.ok) {
         const w = plan.window || {};
-        farmBlock = "IRRIGATION MODEL (trusted): " + JSON.stringify({
+        farmBlock = "IRRIGATION & SOLAR MODEL (trusted): " + JSON.stringify({
           crop: plan.crop, dayOfCrop: plan.day, cycleDays: plan.totalDays, growthStage: plan.stage,
           action: plan.action, litresToPump: plan.litres, minutesToPump: plan.minutes,
           pumpWindow: w.start && w.end ? w.start + " to " + w.end : null,
           fieldNeedsLitres: plan.needLitres, soilWaterLeftPct: plan.soilLeftPct, cropIsStressedWhenSoilWaterBelowPct: plan.stressPct,
           cropUseLitresPerDay: plan.dailyUseLitres, daysToRefill: plan.daysToRefill,
+          solarArbitration: plan.solarArbitration || null,
+          nextCropRotation: plan.rotationAdvice || null,
+          rotationRecommendations: plan.rotationRecommendations || null,
           notes: plan.reasons, weatherSource: plan.source, weatherDataThrough: plan.dataThrough
         });
       } else {

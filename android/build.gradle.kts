@@ -17,7 +17,10 @@ plugins {
 // disposable intermediates every time anything is compiled. Only the source
 // stays synced, which is the only part worth syncing.
 allprojects {
-    layout.buildDirectory.set(
-        file("C:/Users/user/AppData/Local/PumpPayBuild/${project.name}")
-    )
+    if (System.getProperty("os.name").lowercase().contains("windows")) {
+        val winBuild = file("C:/Users/user/AppData/Local/PumpPayBuild/${project.name}")
+        if (winBuild.parentFile?.exists() == true) {
+            layout.buildDirectory.set(winBuild)
+        }
+    }
 }

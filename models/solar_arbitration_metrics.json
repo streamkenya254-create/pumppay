@@ -1,0 +1,18 @@
+{
+  "model_type": "GradientBoostingRegressor (Physics-Informed PV Thermal Derate)",
+  "task": "Hourly Photovoltaic Power Generation & Irrigation Pumping Feasibility",
+  "train_samples": 1440,
+  "test_samples": 360,
+  "metrics": {
+    "r2_score": 0.9968,
+    "rmse_watts": 21.43,
+    "mae_watts": 14.56
+  },
+  "features": [
+    "irradiance_w_m2",
+    "temp_ambient_c",
+    "merra2_wind_m_s",
+    "cloud_cover_fraction",
+    "pv_array_capacity_w"
+  ]
+}
